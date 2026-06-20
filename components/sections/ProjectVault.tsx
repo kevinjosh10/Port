@@ -43,15 +43,8 @@ export default function ProjectVault() {
   return (
     <section ref={containerRef} className="relative w-full py-32 px-6 flex flex-col items-center z-10">
       
-      {/* Massive energy pulse on entrance */}
-      {isInView && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: [0, 0.5, 0], scale: [0.5, 2, 3] }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="absolute inset-0 bg-glow-primary/20 rounded-full blur-[100px] pointer-events-none"
-        />
-      )}
+      {/* Subtle static background glow to replace laggy blur animation */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(77,166,255,0.05),transparent_50%)] pointer-events-none" />
 
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
