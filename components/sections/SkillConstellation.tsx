@@ -81,8 +81,8 @@ export default function SkillConstellation() {
                 key={i}
                 initial={{ opacity: 0, scale: 0.8, y: 30 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: "-250px" }}
-                transition={{ duration: 0.8, delay: i * 0.1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: i * 0.04 }}
               >
               <motion.div
                 animate={{ y: [0, -yOffset, 0] }}
