@@ -52,7 +52,7 @@ export default function MissionTimeline({ mission }: { mission: MissionData }) {
           <div className="absolute inset-0 bg-gradient-to-br from-glow-primary via-surface-300 to-glow-secondary opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
           
           {/* Main Card Body */}
-          <div className="relative bg-surface-200/95 backdrop-blur-3xl rounded-[2rem] h-full p-8 md:p-12 overflow-hidden">
+          <div className="relative bg-surface-200/20 backdrop-blur-lg rounded-[2rem] h-full p-8 md:p-12 overflow-hidden">
             
             {/* Tech Background Grid */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />

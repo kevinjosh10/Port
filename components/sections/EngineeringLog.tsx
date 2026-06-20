@@ -58,8 +58,7 @@ MISSION ACTIVE`;
         {/* Terminal Boot Glow */}
         <div className="absolute -inset-4 bg-glow-primary/20 blur-3xl rounded-[2rem] opacity-50" />
         
-        {/* Terminal Window */}
-        <div className="relative bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+        <div className="relative bg-[#0a0a0a]/40 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
           
           {/* Header Bar */}
           <div className="bg-[#151515] px-4 py-3 border-b border-white/5 flex items-center gap-2">
