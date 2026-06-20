@@ -13,34 +13,42 @@ export default function HeroParticleCloud() {
     const originalPositions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
     
-    const colorInside = new THREE.Color("#ffffff"); // White/cloudy
-    const colorOutside = new THREE.Color("#00f3ff"); // Electric blue tint
+    const colorInside = new THREE.Color("#ffffff"); // White core
+    const colorOutside = new THREE.Color("#00f3ff"); // Electric blue edges
 
-    // Define cloud clusters
+    // Cloud-like overlapping clusters (wider on X, flatter on bottom)
     const clusters = [
       { center: new THREE.Vector3(0, 0, 0), radius: 1.5 },
-      { center: new THREE.Vector3(1.5, 0.5, 0), radius: 1.2 },
-      { center: new THREE.Vector3(-1.5, -0.2, 0.2), radius: 1.3 },
-      { center: new THREE.Vector3(0.8, -0.8, -0.5), radius: 1.0 },
-      { center: new THREE.Vector3(-1.0, 0.8, -0.2), radius: 1.1 },
-      { center: new THREE.Vector3(2.5, -0.3, 0), radius: 0.8 },
-      { center: new THREE.Vector3(-2.5, 0.4, 0.3), radius: 0.9 },
+      { center: new THREE.Vector3(1.2, 0.2, 0.2), radius: 1.2 },
+      { center: new THREE.Vector3(-1.2, 0.1, -0.2), radius: 1.2 },
+      { center: new THREE.Vector3(2.0, -0.2, 0), radius: 0.9 },
+      { center: new THREE.Vector3(-2.0, -0.1, 0.1), radius: 0.9 },
+      { center: new THREE.Vector3(0.5, 0.8, -0.2), radius: 1.1 },
+      { center: new THREE.Vector3(-0.6, 0.7, 0.3), radius: 1.0 },
     ];
 
     for (let i = 0; i < particlesCount; i++) {
-      // Pick a random cluster
       const cluster = clusters[Math.floor(Math.random() * clusters.length)];
       
-      // Random point in sphere
       const u = Math.random();
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
       const r = Math.cbrt(Math.random()) * cluster.radius;
 
-      const x = cluster.center.x + r * Math.sin(phi) * Math.cos(theta);
-      const y = cluster.center.y + r * Math.sin(phi) * Math.sin(theta);
-      const z = cluster.center.z + r * Math.cos(phi);
+      // Base spherical coordinates
+      let x = cluster.center.x + r * Math.sin(phi) * Math.cos(theta);
+      let y = cluster.center.y + r * Math.sin(phi) * Math.sin(theta);
+      let z = cluster.center.z + r * Math.cos(phi);
+
+      // Shape it into a cloud: stretch horizontally, squish vertically
+      x *= 1.4;
+      y *= 0.7;
+      
+      // Flatten the bottom of the cloud slightly
+      if (y < -0.8) {
+        y = -0.8 + (y + 0.8) * 0.4;
+      }
 
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
@@ -50,9 +58,9 @@ export default function HeroParticleCloud() {
       originalPositions[i * 3 + 1] = y;
       originalPositions[i * 3 + 2] = z;
 
-      // Color interpolation based on distance from center
-      const dist = Math.sqrt(x*x + y*y + z*z) / 3.0;
-      const mixedColor = colorInside.clone().lerp(colorOutside, dist);
+      // Color interpolation: blue at edges, white in the dense center
+      const dist = Math.sqrt(x*x + y*y + z*z) / 3.5;
+      const mixedColor = colorInside.clone().lerp(colorOutside, Math.min(dist, 1.0));
       colors[i * 3] = mixedColor.r;
       colors[i * 3 + 1] = mixedColor.g;
       colors[i * 3 + 2] = mixedColor.b;
@@ -66,13 +74,14 @@ export default function HeroParticleCloud() {
   useFrame((state) => {
     if (!pointsRef.current) return;
     
-    // Get mouse position in 3D space
+    // Map mouse pointer to 3D space
     mouse.current.x = (state.pointer.x * viewport.width) / 2;
     mouse.current.y = (state.pointer.y * viewport.height) / 2;
-    mouse.current.z = 0; // Cloud is roughly at z=0
+    mouse.current.z = 0;
 
     const positionsAttribute = pointsRef.current.geometry.attributes.position;
     const posArray = positionsAttribute.array as Float32Array;
+    const time = state.clock.getElapsedTime();
 
     for (let i = 0; i < particlesCount; i++) {
       const idx = i * 3;
@@ -84,39 +93,41 @@ export default function HeroParticleCloud() {
       const py = posArray[idx + 1];
       const pz = posArray[idx + 2];
 
-      // Calculate distance to mouse
+      // 1. Ambient Movement (Continuous subtle vibration/wobble)
+      const wobbleX = Math.sin(time * 1.2 + i) * 0.03;
+      const wobbleY = Math.cos(time * 1.5 + i) * 0.03;
+      const wobbleZ = Math.sin(time * 1.8 + i) * 0.03;
+
+      let targetX = ox + wobbleX;
+      let targetY = oy + wobbleY;
+      let targetZ = oz + wobbleZ;
+
+      // 2. Mouse Repulsion (Slight interaction)
       const dx = px - mouse.current.x;
       const dy = py - mouse.current.y;
-      // Slight depth perception on mouse
-      const dz = pz - mouse.current.z; 
+      const dz = pz - mouse.current.z;
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-      const maxDistance = 1.5;
-      const force = Math.max(0, maxDistance - dist) / maxDistance;
-
-      if (force > 0) {
-        // Repel
-        const pushX = (dx / dist) * force * 0.1;
-        const pushY = (dy / dist) * force * 0.1;
-        const pushZ = (dz / dist) * force * 0.1;
-
-        posArray[idx] += pushX;
-        posArray[idx + 1] += pushY;
-        posArray[idx + 2] += pushZ;
-      } else {
-        // Return to original smoothly
-        posArray[idx] += (ox - px) * 0.05;
-        posArray[idx + 1] += (oy - py) * 0.05;
-        posArray[idx + 2] += (oz - pz) * 0.05;
+      const maxDistance = 1.2; // Interaction radius
+      if (dist < maxDistance) {
+        const force = (maxDistance - dist) / maxDistance;
+        // Pushes the target away slightly
+        targetX += (dx / dist) * force * 0.15;
+        targetY += (dy / dist) * force * 0.15;
+        targetZ += (dz / dist) * force * 0.15;
       }
+
+      // 3. Spring physics: smoothly move current position toward target
+      posArray[idx] += (targetX - px) * 0.08;
+      posArray[idx + 1] += (targetY - py) * 0.08;
+      posArray[idx + 2] += (targetZ - pz) * 0.08;
     }
     
     positionsAttribute.needsUpdate = true;
 
-    // Slow overall floating rotation
-    const elapsedTime = state.clock.getElapsedTime();
-    pointsRef.current.rotation.y = Math.sin(elapsedTime * 0.1) * 0.1;
-    pointsRef.current.rotation.x = Math.cos(elapsedTime * 0.1) * 0.05;
+    // Very slow atmospheric rotation
+    pointsRef.current.rotation.y = Math.sin(time * 0.1) * 0.1;
+    pointsRef.current.rotation.x = Math.cos(time * 0.1) * 0.05;
   });
 
   return (
