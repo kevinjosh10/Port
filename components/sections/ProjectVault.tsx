@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { Lock, Unlock } from "lucide-react";
+import { useRef } from "react";
 
 const projects = [
   {
@@ -23,8 +22,7 @@ const projects = [
   {
     id: "04",
     title: "Cryptexa",
-    desc: "Crypto intelligence platform revealing market behavior, manipulation patterns, sentiment trends, and hidden market dynamics.",
-    isClassified: true
+    desc: "Crypto intelligence platform revealing market behavior, manipulation patterns, sentiment trends, and hidden market dynamics."
   },
   {
     id: "05",
@@ -37,43 +35,6 @@ const projects = [
     desc: "Geolocation-based attendance platform with cloud integration and real-time validation."
   }
 ];
-
-function ClassifiedCard({ project }: { project: any }) {
-  const [unlocked, setUnlocked] = useState(false);
-
-  return (
-    <div 
-      className="glass-panel p-8 flex flex-col h-full relative overflow-hidden group cursor-pointer"
-      onClick={() => setUnlocked(true)}
-    >
-      <div className={`absolute inset-0 bg-red-900/20 transition-opacity duration-1000 ${unlocked ? 'opacity-0' : 'opacity-100'}`} />
-      <div className={`absolute inset-0 bg-glow-primary/10 transition-opacity duration-1000 ${unlocked ? 'opacity-100' : 'opacity-0'}`} />
-      
-      {!unlocked ? (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-surface-200/90 backdrop-blur-sm transition-all duration-1000">
-          <Lock className="w-12 h-12 text-red-500 mb-4" />
-          <div className="text-red-500 font-mono text-sm tracking-[0.2em] uppercase font-bold animate-pulse text-center px-4">
-            Classified Project Detected<br/>
-            <span className="text-xs text-text-muted mt-2 block font-normal cursor-pointer hover:text-white transition-colors">Click To Decrypt</span>
-          </div>
-        </div>
-      ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none opacity-0 animate-[flash_2s_ease-out_forwards]">
-          <Unlock className="w-16 h-16 text-glow-primary mb-4" />
-          <div className="text-white font-mono text-xl tracking-widest uppercase">Decrypted</div>
-        </div>
-      )}
-
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="font-mono text-xs text-glow-primary mb-4">MISSION {project.id}</div>
-        <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
-        <p className="text-text-muted font-light leading-relaxed flex-grow">
-          {project.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export default function ProjectVault() {
   const containerRef = useRef<HTMLElement>(null);
@@ -112,20 +73,16 @@ export default function ProjectVault() {
             transition={{ duration: 0.6, delay: i * 0.1 }}
             className="group [perspective:1000px] h-[320px]"
           >
-            {project.isClassified ? (
-              <ClassifiedCard project={project} />
-            ) : (
-              <div className="glass-panel p-8 flex flex-col h-full relative overflow-hidden transition-transform duration-500 ease-out group-hover:[transform:rotateX(5deg)_rotateY(-5deg)_scale(1.02)] group-hover:border-glow-primary/50 group-hover:shadow-[0_0_30px_rgba(77,166,255,0.15)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-glow-primary/0 via-glow-primary/0 to-glow-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="font-mono text-xs text-text-muted mb-4 group-hover:text-glow-primary transition-colors">MISSION {project.id}</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
-                  <p className="text-text-muted font-light leading-relaxed flex-grow">
-                    {project.desc}
-                  </p>
-                </div>
+            <div className="glass-panel p-8 flex flex-col h-full relative overflow-hidden transition-transform duration-500 ease-out group-hover:[transform:rotateX(5deg)_rotateY(-5deg)_scale(1.02)] group-hover:border-glow-primary/50 group-hover:shadow-[0_0_30px_rgba(77,166,255,0.15)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-glow-primary/0 via-glow-primary/0 to-glow-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="font-mono text-xs text-text-muted mb-4 group-hover:text-glow-primary transition-colors">MISSION {project.id}</div>
+                <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
+                <p className="text-text-muted font-light leading-relaxed flex-grow">
+                  {project.desc}
+                </p>
               </div>
-            )}
+            </div>
           </motion.div>
         ))}
       </div>

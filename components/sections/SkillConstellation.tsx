@@ -43,7 +43,7 @@ const skillData = [
 
 export default function SkillConstellation() {
   return (
-    <section className="relative w-full py-32 px-6 flex flex-col items-center z-10 bg-background overflow-hidden">
+    <section className="relative w-full py-32 px-6 flex flex-col items-center z-10 overflow-hidden">
       
       {/* Headings */}
       <div className="text-center z-20 mb-20 w-full">

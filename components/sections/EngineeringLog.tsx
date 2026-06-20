@@ -22,7 +22,7 @@ Current Focus:
 - CloudWatch
 
 Latest Project:
-Cloud Morph
+GitWrapped
 
 Progress:
 ${mission.currentDay} / 1000 Days

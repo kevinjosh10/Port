@@ -41,10 +41,16 @@ const config: Config = {
           '0%': { opacity: '0' },
           '10%': { opacity: '1', filter: 'brightness(2)' },
           '100%': { opacity: '0' },
+        },
+        gradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
         }
       },
       animation: {
         flash: 'flash 2s ease-out forwards',
+        gradient: 'gradient 3s linear infinite',
       }
     },
   },
