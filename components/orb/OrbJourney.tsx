@@ -66,20 +66,28 @@ export default function OrbJourney() {
   const { w, h } = dimensions;
   
   const getPath = () => {
-    const segments = Math.max(3, Math.floor(h / 800));
-    const segmentHeight = h / segments;
-    let d = `M ${w/2} 0`;
+    const vh = window.innerHeight;
+    const pathStartY = vh / 2;
+    const pathEndY = h - vh / 2;
+    const pathHeight = pathEndY - pathStartY;
+    
+    // Prevent errors if page is too short
+    if (pathHeight <= 0) return `M ${w/2} 0 L ${w/2} ${h}`;
+
+    const segments = Math.max(3, Math.floor(pathHeight / 800));
+    const segmentHeight = pathHeight / segments;
+    let d = `M ${w/2} ${pathStartY}`;
     
     for (let i = 0; i < segments; i++) {
-      const startY = i * segmentHeight;
-      const endY = (i + 1) * segmentHeight;
-      const midY1 = startY + segmentHeight * 0.33;
-      const midY2 = startY + segmentHeight * 0.66;
+      const segStartY = pathStartY + i * segmentHeight;
+      const segEndY = pathStartY + (i + 1) * segmentHeight;
+      const midY1 = segStartY + segmentHeight * 0.33;
+      const midY2 = segStartY + segmentHeight * 0.66;
       
       const dir = i % 2 === 0 ? 1 : -1;
       const spread = w > 768 ? 200 : 80;
       
-      d += ` C ${w/2 + spread * dir} ${midY1}, ${w/2 + spread * dir} ${midY2}, ${w/2} ${endY}`;
+      d += ` C ${w/2 + spread * dir} ${midY1}, ${w/2 + spread * dir} ${midY2}, ${w/2} ${segEndY}`;
     }
     return d;
   };
