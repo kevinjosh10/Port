@@ -1,9 +1,5 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import * as THREE from "three";
 import { motion } from "framer-motion";
 import { 
   Server, Database, Shield, Network, Globe, Zap, Lock, Cpu, Waypoints,
@@ -39,78 +35,18 @@ const skillData = [
   { name: "REST APIs", icon: CloudIcon },
   { name: "Git", icon: GitBranch },
   { name: "GitHub", icon: GitBranch },
-  { name: "GitHub Actions", icon: Repeat },
   { name: "CI/CD", icon: Repeat },
   { name: "Monitoring", icon: Eye },
   { name: "Linux", icon: Settings },
-  { name: "Systemd", icon: Settings },
-  { name: "SSH", icon: Terminal },
-  { name: "DNS", icon: Globe },
   { name: "TCP/IP", icon: Network }
 ];
 
-function SkillCloud() {
-  const groupRef = useRef<THREE.Group>(null);
-  
-  // Generate random stable positions for nodes in a cloud (spherical volume)
-  const nodes = useMemo(() => {
-    return skillData.map((data) => {
-      // Create a spherical distribution cluster
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = Math.cbrt(Math.random()) * 5.5; // Radius of the cloud
-
-      const x = r * Math.sin(phi) * Math.cos(theta);
-      const y = r * Math.sin(phi) * Math.sin(theta);
-      const z = r * Math.cos(phi);
-      
-      return { ...data, position: new THREE.Vector3(x, y, z) };
-    });
-  }, []);
-
-  useFrame((state) => {
-    if (groupRef.current) {
-      // Slow ambient rotation of the entire cloud
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.05;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.02) * 0.1;
-      groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.02) * 0.05;
-    }
-  });
-
-  return (
-    <group ref={groupRef}>
-      {/* Central glow core */}
-      <mesh>
-        <sphereGeometry args={[2, 32, 32]} />
-        <meshBasicMaterial color="#4DA6FF" transparent opacity={0.05} />
-      </mesh>
-      
-      {nodes.map((node, i) => {
-        const Icon = node.icon;
-        return (
-          <group key={i} position={node.position}>
-            <Html transform sprite center distanceFactor={8}>
-              <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-200/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-glow-primary hover:shadow-[0_0_20px_rgba(77,166,255,0.4)] hover:bg-surface-200/80 transition-all duration-300 w-24 h-24 cursor-pointer group">
-                <Icon className="w-8 h-8 text-text-muted group-hover:text-glow-primary transition-colors duration-300 mb-2" strokeWidth={1.5} />
-                <span className="text-[11px] font-bold text-white text-center leading-tight tracking-wide uppercase">
-                  {node.name}
-                </span>
-              </div>
-            </Html>
-          </group>
-        );
-      })}
-    </group>
-  );
-}
-
 export default function SkillConstellation() {
   return (
-    <section className="relative w-full h-screen min-h-[800px] flex flex-col items-center justify-center z-10 bg-background overflow-hidden">
+    <section className="relative w-full py-32 px-6 flex flex-col items-center z-10 bg-background overflow-hidden">
       
-      <div className="absolute top-32 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none w-full px-6">
+      {/* Headings */}
+      <div className="text-center z-20 mb-20 w-full">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,17 +66,50 @@ export default function SkillConstellation() {
         </motion.h3>
       </div>
 
-      <div className="absolute inset-0 z-0 cursor-move">
-        <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
-          <fog attach="fog" args={['#050505', 5, 20]} />
-          <ambientLight intensity={0.5} />
-          <SkillCloud />
-        </Canvas>
+      {/* 2D Floating Cloud Container */}
+      <div className="relative z-20 w-full max-w-6xl flex flex-wrap justify-center gap-6 md:gap-8">
+        {skillData.map((node, i) => {
+          const Icon = node.icon;
+          
+          // Generate a deterministic random floating animation for each card
+          const floatDuration = 4 + (i % 3) * 1.5;
+          const floatDelay = (i % 5) * 0.4;
+          const yOffset = 10 + (i % 3) * 5;
+
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8, y: 30 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: (i % 10) * 0.1 }}
+            >
+              <motion.div
+                animate={{ y: [0, -yOffset, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: floatDuration,
+                  ease: "easeInOut",
+                  delay: floatDelay
+                }}
+                className="flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl bg-surface-200/50 backdrop-blur-xl border border-white/5 shadow-xl hover:border-glow-primary hover:shadow-[0_0_25px_rgba(77,166,255,0.3)] hover:bg-surface-200/90 transition-all duration-300 w-28 h-28 md:w-32 md:h-32 cursor-default group"
+              >
+                <Icon 
+                  className="w-10 h-10 md:w-12 md:h-12 text-text-muted group-hover:text-glow-primary transition-colors duration-300 mb-3" 
+                  strokeWidth={1.5} 
+                />
+                <span className="text-xs md:text-sm font-bold text-white text-center leading-tight tracking-wider uppercase">
+                  {node.name}
+                </span>
+              </motion.div>
+            </motion.div>
+          );
+        })}
       </div>
+
+      {/* Central subtle glow behind the cards */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-glow-primary/5 blur-[120px] rounded-[100%] pointer-events-none z-0" />
       
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-muted text-xs uppercase tracking-widest font-mono z-20 pointer-events-none">
-        Drag to explore cloud
-      </div>
     </section>
   );
 }
