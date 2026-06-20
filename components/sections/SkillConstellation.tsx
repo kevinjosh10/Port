@@ -82,7 +82,7 @@ export default function SkillConstellation() {
               initial={{ opacity: 0, scale: 0.8, y: 30 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: (i % 10) * 0.1 }}
+              transition={{ duration: 0.8, delay: i * 0.08 }} // Stagger one by one
             >
               <motion.div
                 animate={{ y: [0, -yOffset, 0] }}
@@ -92,7 +92,7 @@ export default function SkillConstellation() {
                   ease: "easeInOut",
                   delay: floatDelay
                 }}
-                className="flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl bg-surface-200/50 backdrop-blur-xl border border-white/5 shadow-xl hover:border-glow-primary hover:shadow-[0_0_25px_rgba(77,166,255,0.3)] hover:bg-surface-200/90 transition-all duration-300 w-28 h-28 md:w-32 md:h-32 cursor-default group"
+                className="flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl bg-surface-200/10 backdrop-blur-md border border-white/10 shadow-xl hover:border-glow-primary hover:shadow-[0_0_25px_rgba(77,166,255,0.4)] hover:bg-surface-200/30 transition-all duration-500 w-28 h-28 md:w-32 md:h-32 cursor-default group"
               >
                 <Icon 
                   className="w-10 h-10 md:w-12 md:h-12 text-text-muted group-hover:text-glow-primary transition-colors duration-300 mb-3" 
