@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import HeroParticleSphere from "../3d/HeroParticleSphere";
+import HeroParticleCloud from "../3d/HeroParticleCloud";
 import ScrollReveal from "../motion/ScrollReveal";
 import MagneticButton from "../motion/MagneticButton";
 
@@ -10,20 +10,20 @@ export default function HeroSection() {
     <section className="relative w-full h-screen overflow-hidden bg-background">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-          <HeroParticleSphere />
+        <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+          <HeroParticleCloud />
         </Canvas>
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center pointer-events-none">
         <ScrollReveal yOffset={100} delay={0.2}>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
-            DESIGNING.<br />BUILDING.<br />SCALING.
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50 mb-4 uppercase">
+            KEVIN JOSHUA L
           </h1>
         </ScrollReveal>
         
-        <ScrollReveal yOffset={50} delay={0.8} className="mt-12 pointer-events-auto">
+        <ScrollReveal yOffset={50} delay={0.8} className="mt-6 pointer-events-auto">
           <p className="text-xl md:text-2xl text-white/70 max-w-2xl font-light">
             I build systems, products, and experiences for the future of the web.
           </p>
