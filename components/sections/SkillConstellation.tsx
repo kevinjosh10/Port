@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { 
   Server, Database, Shield, Network, Globe, Zap, Lock, Cpu, Waypoints,
   Bell, ListTree, Activity, LineChart, Maximize, GitMerge, HardDrive, FolderOpen,
-  Code2, Terminal, Wrench, Cloud, GitBranch, Github, Repeat, Eye, Settings, FileJson
+  Code2, Terminal, Wrench, Cloud as CloudIcon, GitBranch, Repeat, Eye, Settings, FileJson
 } from "lucide-react";
 
 // Map skills to icons
@@ -36,9 +36,9 @@ const skillData = [
   { name: "Bash", icon: Terminal },
   { name: "Boto3", icon: Wrench },
   { name: "JSON", icon: FileJson },
-  { name: "REST APIs", icon: Cloud },
+  { name: "REST APIs", icon: CloudIcon },
   { name: "Git", icon: GitBranch },
-  { name: "GitHub", icon: Github },
+  { name: "GitHub", icon: GitBranch },
   { name: "GitHub Actions", icon: Repeat },
   { name: "CI/CD", icon: Repeat },
   { name: "Monitoring", icon: Eye },
@@ -49,7 +49,7 @@ const skillData = [
   { name: "TCP/IP", icon: Network }
 ];
 
-function Cloud() {
+function SkillCloud() {
   const groupRef = useRef<THREE.Group>(null);
   
   // Generate random stable positions for nodes in a cloud (spherical volume)
@@ -134,7 +134,7 @@ export default function SkillConstellation() {
         <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
           <fog attach="fog" args={['#050505', 5, 20]} />
           <ambientLight intensity={0.5} />
-          <Cloud />
+          <SkillCloud />
         </Canvas>
       </div>
       
