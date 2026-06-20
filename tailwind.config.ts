@@ -46,11 +46,16 @@ const config: Config = {
           '0%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
           '100%': { backgroundPosition: '0% 50%' },
+        },
+        scan: {
+          '0%': { left: '-100%' },
+          '100%': { left: '200%' },
         }
       },
       animation: {
         flash: 'flash 2s ease-out forwards',
         gradient: 'gradient 3s linear infinite',
+        scan: 'scan 3s linear infinite',
       }
     },
   },
