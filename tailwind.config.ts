@@ -10,20 +10,41 @@ const config: Config = {
     extend: {
       colors: {
         background: "#050505",
-        foreground: "#ededed",
-        neon: {
-          blue: "#00f3ff",
-          violet: "#b026ff",
-          cyan: "#00ffff",
+        surface: {
+          100: "#0A0A0A",
+          200: "#101010",
+          300: "#151515",
+        },
+        glow: {
+          primary: "#4DA6FF",
+          secondary: "#7DD3FC",
+        },
+        accent: "#38BDF8",
+        text: {
+          primary: "#FFFFFF",
+          secondary: "#E5E7EB",
+          muted: "#9CA3AF",
         }
       },
+      fontFamily: {
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+      },
       backgroundImage: {
-        "glass-gradient": "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
       boxShadow: {
-        "neon-blue": "0 0 20px rgba(0, 243, 255, 0.5)",
-        "neon-violet": "0 0 20px rgba(176, 38, 255, 0.5)",
-        "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
+        "glow-primary": "0 0 20px rgba(77, 166, 255, 0.4)",
+        "glow-secondary": "0 0 20px rgba(125, 211, 252, 0.3)",
+      },
+      keyframes: {
+        flash: {
+          '0%': { opacity: '0' },
+          '10%': { opacity: '1', filter: 'brightness(2)' },
+          '100%': { opacity: '0' },
+        }
+      },
+      animation: {
+        flash: 'flash 2s ease-out forwards',
       }
     },
   },

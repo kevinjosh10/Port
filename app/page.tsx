@@ -1,23 +1,44 @@
-import dynamic from "next/dynamic";
-import AboutSection from "../components/sections/AboutSection";
-import MissionSection from "../components/sections/MissionSection";
-import CapabilitiesSection from "../components/sections/CapabilitiesSection";
-import ExperienceSection from "../components/sections/ExperienceSection";
-import ContactSection from "../components/sections/ContactSection";
+"use client";
 
-const HeroSection = dynamic(() => import("../components/sections/HeroSection"), { ssr: false });
-const ProjectsSection = dynamic(() => import("../components/sections/ProjectsSection"), { ssr: false });
+import { getMissionData } from "../lib/mission-engine";
+import dynamic from "next/dynamic";
+
+// Dynamic imports for heavy or interactive components
+const OrbJourney = dynamic(() => import("../components/orb/OrbJourney"), { ssr: false });
+const HeroSection = dynamic(() => import("../components/sections/HeroSection"));
+const MissionOverview = dynamic(() => import("../components/sections/MissionOverview"));
+const MissionTimeline = dynamic(() => import("../components/sections/MissionTimeline"));
+const Why1000Days = dynamic(() => import("../components/sections/Why1000Days"));
+const JourneyPhaseTimeline = dynamic(() => import("../components/sections/JourneyPhaseTimeline"));
+const EngineeringLog = dynamic(() => import("../components/sections/EngineeringLog"));
+const ProjectVault = dynamic(() => import("../components/sections/ProjectVault"));
+const WisdomArchive = dynamic(() => import("../components/sections/WisdomArchive"));
+const SkillConstellation = dynamic(() => import("../components/sections/SkillConstellation"), { ssr: false });
+const RoadmapConsole = dynamic(() => import("../components/sections/RoadmapConsole"));
+const FinalContact = dynamic(() => import("../components/sections/FinalContact"));
 
 export default function Home() {
+  const mission = getMissionData();
+
   return (
-    <main className="flex min-h-screen flex-col bg-background text-foreground">
-      <HeroSection />
-      <AboutSection />
-      <MissionSection />
-      <ProjectsSection />
-      <CapabilitiesSection />
-      <ExperienceSection />
-      <ContactSection />
+    <main className="relative min-h-screen bg-background text-foreground flex flex-col items-center selection:bg-glow-primary/30">
+      {/* Central Scrolling Orb System */}
+      <OrbJourney />
+
+      {/* Narrative Sections */}
+      <div className="w-full relative z-10 flex flex-col items-center">
+        <HeroSection mission={mission} />
+        <MissionOverview mission={mission} />
+        <MissionTimeline mission={mission} />
+        <Why1000Days />
+        <JourneyPhaseTimeline />
+        <EngineeringLog mission={mission} />
+        <ProjectVault />
+        <WisdomArchive />
+        <SkillConstellation />
+        <RoadmapConsole />
+        <FinalContact mission={mission} />
+      </div>
     </main>
   );
 }
