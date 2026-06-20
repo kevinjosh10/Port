@@ -66,23 +66,7 @@ export default function OrbJourney() {
   const { w, h } = dimensions;
   
   const getPath = () => {
-    // Determine number of segments based on page height
-    const segments = Math.max(3, Math.floor(h / 800));
-    const segmentHeight = h / segments;
-    let d = `M ${w/2} 0`;
-    
-    for (let i = 0; i < segments; i++) {
-      const startY = i * segmentHeight;
-      const endY = (i + 1) * segmentHeight;
-      const midY1 = startY + segmentHeight * 0.33;
-      const midY2 = startY + segmentHeight * 0.66;
-      
-      const dir = i % 2 === 0 ? 1 : -1;
-      const spread = w > 768 ? 300 : 100;
-      
-      d += ` C ${w/2 + spread * dir} ${midY1}, ${w/2 + spread * dir} ${midY2}, ${w/2} ${endY}`;
-    }
-    return d;
+    return `M ${w/2} 0 L ${w/2} ${h}`;
   };
 
   const pathD = getPath();

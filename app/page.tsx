@@ -12,7 +12,6 @@ const Why1000Days = dynamic(() => import("../components/sections/Why1000Days"));
 const JourneyPhaseTimeline = dynamic(() => import("../components/sections/JourneyPhaseTimeline"));
 const EngineeringLog = dynamic(() => import("../components/sections/EngineeringLog"));
 const ProjectVault = dynamic(() => import("../components/sections/ProjectVault"));
-const WisdomArchive = dynamic(() => import("../components/sections/WisdomArchive"));
 const SkillConstellation = dynamic(() => import("../components/sections/SkillConstellation"), { ssr: false });
 const RoadmapConsole = dynamic(() => import("../components/sections/RoadmapConsole"));
 const FinalContact = dynamic(() => import("../components/sections/FinalContact"));
@@ -34,7 +33,6 @@ export default function Home() {
         <JourneyPhaseTimeline />
         <EngineeringLog mission={mission} />
         <ProjectVault />
-        <WisdomArchive />
         <SkillConstellation />
         <RoadmapConsole />
         <FinalContact mission={mission} />

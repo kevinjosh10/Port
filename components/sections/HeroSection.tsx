@@ -15,9 +15,12 @@ export default function HeroSection({ mission }: { mission: MissionData }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
         >
-          <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-white mb-6 uppercase">
+          <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-white mb-2 uppercase">
             Kevin Joshua
           </h1>
+          <h2 className="text-2xl md:text-4xl text-glow-primary font-light tracking-widest uppercase mb-6">
+            1st Year CSE
+          </h2>
         </motion.div>
         
         <motion.div
